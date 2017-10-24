@@ -75,7 +75,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     private void refresh() {
-        loadingView.setVisibility(View.GONE);
+        loadingView.setVisibility(View.VISIBLE);
         errorMessageView.setVisibility(View.GONE);
         mSwipeRefreshLayout.setVisibility(View.GONE);
 
@@ -108,12 +108,18 @@ public class ArticleListActivity extends AppCompatActivity implements
     };
 
     private void updateRefreshingUI() {
-        loadingView.setVisibility(View.GONE);
         mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
-        if (!mIsRefreshing && mRecyclerView.getChildCount() == 0) {
-            errorMessageView.setVisibility(View.VISIBLE);
+        if (!mIsRefreshing) {
+            loadingView.setVisibility(View.GONE);
+            if (mRecyclerView.getChildCount() == 0) {
+                errorMessageView.setVisibility(View.VISIBLE);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+            } else {
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                errorMessageView.setVisibility(View.GONE);
+            }
         } else {
-            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+            loadingView.setVisibility(View.VISIBLE);
         }
     }
 
