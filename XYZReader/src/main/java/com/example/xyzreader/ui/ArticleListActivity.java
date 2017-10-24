@@ -21,6 +21,7 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
@@ -46,6 +47,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
 
+    private LinearLayout loadingView;
+    private LinearLayout errorMessageView;
+
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
@@ -62,12 +66,19 @@ public class ArticleListActivity extends AppCompatActivity implements
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         getLoaderManager().initLoader(0, null, this);
 
+        loadingView = (LinearLayout) findViewById(R.id.main_loading_screen);
+        errorMessageView = (LinearLayout) findViewById(R.id.main_error_screen);
+
         if (savedInstanceState == null) {
             refresh();
         }
     }
 
     private void refresh() {
+        loadingView.setVisibility(View.GONE);
+        errorMessageView.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
+
         startService(new Intent(this, UpdaterService.class));
     }
 
@@ -97,7 +108,13 @@ public class ArticleListActivity extends AppCompatActivity implements
     };
 
     private void updateRefreshingUI() {
+        loadingView.setVisibility(View.GONE);
         mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
+        if (!mIsRefreshing && mRecyclerView.getChildCount() == 0) {
+            errorMessageView.setVisibility(View.VISIBLE);
+        } else {
+            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

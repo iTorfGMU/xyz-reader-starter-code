@@ -12,4 +12,8 @@
     <dimen name="default_margin">8dp</dimen>
     <dimen name="default_textsize">18sp</dimen>
 
+
+    <integer name="anim_duration_long">500</integer>
+    <integer name="anim_duration_medium">300</integer>
+
 </resources>
