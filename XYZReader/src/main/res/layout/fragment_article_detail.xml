@@ -21,9 +21,8 @@
                 android:id="@+id/photo.collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleMarginEnd="64dp"
-                app:expandedTitleMarginStart="48dp"
+                app:expandedTitleMarginEnd="@dimen/collapsing_toolbar_margin_end"
+                app:expandedTitleMarginStart="@dimen/collapsing_toolbar_margin_start"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <LinearLayout
@@ -73,6 +72,15 @@
                             android:textColor="@android:color/white" />
                     </LinearLayout>
                 </LinearLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:layout_collapseMode="pin" />
+
+
             </android.support.design.widget.CollapsingToolbarLayout>
 
             <com.example.xyzreader.ui.MaxWidthLinearLayout

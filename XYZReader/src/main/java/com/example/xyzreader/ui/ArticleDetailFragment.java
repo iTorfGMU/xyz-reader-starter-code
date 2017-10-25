@@ -22,6 +22,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -308,22 +309,42 @@ public class ArticleDetailFragment extends Fragment implements
 
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-                String str = Html.fromHtml(
-                        DateUtils.getRelativeTimeSpanString(
-                                publishedDate.getTime(),
-                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                                DateUtils.FORMAT_ABBREV_ALL).toString()
-                                + " by <font color='#ffffff'>"
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
+                String str = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    str = Html.fromHtml(
+                            DateUtils.getRelativeTimeSpanString(
+                                    publishedDate.getTime(),
+                                    System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                                    DateUtils.FORMAT_ABBREV_ALL).toString()
+                                    + " by <font color='#ffffff'>"
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                    + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
+                } else {
+                    str = Html.fromHtml(
+                            DateUtils.getRelativeTimeSpanString(
+                                    publishedDate.getTime(),
+                                    System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                                    DateUtils.FORMAT_ABBREV_ALL).toString()
+                                    + " by <font color='#ffffff'>"
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                    + "</font>").toString();
+                }
                 map.put(publishedDateKey, str);
 
             } else {
                 // If date is before 1902, just show the string
-                String str = Html.fromHtml(
-                        outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
+                String str = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    str = Html.fromHtml(
+                            outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                    + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
+                } else {
+                    str = Html.fromHtml(
+                            outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                    + "</font>").toString();
+                }
                 map.put(publishedDateKey, str);
             }
 
@@ -345,9 +366,13 @@ public class ArticleDetailFragment extends Fragment implements
     }
 
     void loadImage(){
+        String imageURL = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
+        if (TextUtils.isEmpty(imageURL)) {
+            return;
+        }
 
         ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
-                .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
+                .get(imageURL, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                         Bitmap bitmap = imageContainer.getBitmap();
