@@ -147,7 +147,7 @@ public class SelectionBuilder {
     /**
      * Execute query using the current internal state as {@code WHERE} clause.
      */
-    private Cursor query(SQLiteDatabase db, String[] columns, String orderBy) {
+    Cursor query(SQLiteDatabase db, String[] columns, String orderBy) {
         return query(db, columns, null, null, orderBy, null);
     }
 
@@ -165,7 +165,7 @@ public class SelectionBuilder {
     /**
      * Execute update using the current internal state as {@code WHERE} clause.
      */
-    private int update(SQLiteDatabase db, ContentValues values) {
+    int update(SQLiteDatabase db, ContentValues values) {
         assertTable();
         return db.update(mTable, values, getSelection(), getSelectionArgs());
     }
@@ -173,7 +173,7 @@ public class SelectionBuilder {
     /**
      * Execute delete using the current internal state as {@code WHERE} clause.
      */
-    private int delete(SQLiteDatabase db) {
+    int delete(SQLiteDatabase db) {
         assertTable();
         return db.delete(mTable, getSelection(), getSelectionArgs());
     }
