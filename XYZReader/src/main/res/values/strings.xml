@@ -11,4 +11,7 @@
 
     <string name="error_message">Looks like something went wrong! We\'re looking into it. Our apologies for the inconvenience!</string>
 
+    <string name="fab_action_type" translatable="false">text/plain</string>
+    <string name="fab_action_text">"Some sample text"</string>
+
 </resources>
