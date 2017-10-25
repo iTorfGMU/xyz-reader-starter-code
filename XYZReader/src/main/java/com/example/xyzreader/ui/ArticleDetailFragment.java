@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 
 import java.text.ParseException;
@@ -316,7 +315,7 @@ public class ArticleDetailFragment extends Fragment implements
                                 DateUtils.FORMAT_ABBREV_ALL).toString()
                                 + " by <font color='#ffffff'>"
                                 + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>").toString();
+                                + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
                 map.put(publishedDateKey, str);
 
             } else {
@@ -324,7 +323,7 @@ public class ArticleDetailFragment extends Fragment implements
                 String str = Html.fromHtml(
                         outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
                                 + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>").toString();
+                                + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
                 map.put(publishedDateKey, str);
             }
 
