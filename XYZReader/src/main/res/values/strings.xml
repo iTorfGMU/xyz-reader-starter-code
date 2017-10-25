@@ -9,4 +9,6 @@
 
     <string name="up">Up</string>
 
+    <string name="error_message">Looks like something went wrong! We\'re looking into it. Our apologies for the inconvenience!</string>
+
 </resources>
